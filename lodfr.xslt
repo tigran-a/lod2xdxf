@@ -2,10 +2,9 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
                 xmlns:lod="http://www.lod.lu/" exclude-result-prefixes="lod">
 
-    <xsl:output method="xml" indent="yes" encoding="UTF-8"/>
+    <xsl:output method="xml" indent="yes" encoding="UTF-8"  doctype-system="https://raw.github.com/soshial/xdxf_makedict/master/format_standard/xdxf_strict.dtd"/>
 
     <xsl:template match="/lod:LOD">
-        <xsl:text disable-output-escaping="yes">&lt;!DOCTYPE  xdxf SYSTEM "https://raw.github.com/soshial/xdxf_makedict/master/format_standard/xdxf_strict.dtd"&gt;</xsl:text>
         <xdxf lang_from="LUX" lang_to="FRA" format="logical" revision="000">
             <meta_info>
                 <title>LOD-based LB-FR</title>
@@ -57,7 +56,7 @@
                     <xsl:text>FR: </xsl:text>
                     <xsl:value-of select="lod:EQUIV-TRAD-FR/lod:ETF-EXPLICITE/text()" />
                     <i>
-                        <xsl:text> (</xsl:text><xsl:value-of select="lod:EQUIV-TRAD-FR/lod:RS-ETF-PRESENTE/text()" /><xsl:text> )</xsl:text>
+                        <xsl:text> (</xsl:text><xsl:value-of select="lod:EQUIV-TRAD-FR/lod:RS-ETF-PRESENTE/text()" /><xsl:text>)</xsl:text>
                     </i>
                     <xsl:text>&#xa;</xsl:text>
                 </c>
@@ -67,7 +66,7 @@
                     <i>
                         <xsl:text> (</xsl:text>
                         <xsl:value-of select="lod:EQUIV-TRAD-ALL/lod:RS-ETA-PRESENTE/text()" />
-                        <xsl:text> )</xsl:text>
+                        <xsl:text>)</xsl:text>
                     </i>
                     <xsl:text>&#xa;</xsl:text>
                 </c>
@@ -77,7 +76,7 @@
                     <i>
                         <xsl:text> (</xsl:text>
                         <xsl:value-of select="lod:EQUIV-TRAD-EN/lod:RS-ETE-PRESENTE/text()" />
-                        <xsl:text> )</xsl:text>
+                        <xsl:text>)</xsl:text>
                     </i>
                     <xsl:text>&#xa;</xsl:text>
                 </c>
@@ -87,7 +86,7 @@
                     <i>
                         <xsl:text> (</xsl:text>
                         <xsl:value-of select="lod:EQUIV-TRAD-PO/lod:RS-ETP-PRESENTE/text()" />
-                        <xsl:text> )</xsl:text>
+                        <xsl:text>)</xsl:text>
                     </i>
                     <xsl:text>&#xa;</xsl:text>
                 </c>
