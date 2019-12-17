@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:lod="http://www.lod.lu/" exclude-result-prefixes="lod">
-
     <xsl:output method="xml" indent="yes" encoding="UTF-8" doctype-system="https://raw.github.com/soshial/xdxf_makedict/master/format_standard/xdxf_strict.dtd" />
-
     <xsl:template match="/lod:LOD">
         <xdxf lang_from="LUX" lang_to="FRA" format="logical" revision="000">
             <meta_info>
@@ -32,26 +30,30 @@
             </lexicon>
         </xdxf>
     </xsl:template>
-
     <xsl:template match="lod:ITEM" name="ITEM">
-        <xsl:apply-templates select="./lod:ARTICLE" />
+        <ar>
+            <xsl:apply-templates select="./lod:ARTICLE" />
+            <xsl:apply-templates select="./lod:FLX-ADJ" />
+            <xsl:for-each select="./lod:FLX-VRB">
+                <xsl:call-template name="recursive_table" />
+            </xsl:for-each>
+
+        </ar>
+
     </xsl:template>
     <xsl:template match="lod:ARTICLE">
-        <ar>
-            <k id="{lod:ITEM-ADRESSE/@lod:ID-ITEM-ADRESSE}">
-                <xsl:value-of select="lod:ITEM-ADRESSE" />
-            </k>
-            <xsl:apply-templates select="./lod:MICROSTRUCTURE" />
-        </ar>
+
+        <k id="{lod:ITEM-ADRESSE/@lod:ID-ITEM-ADRESSE}">
+            <xsl:value-of select="lod:ITEM-ADRESSE" />
+        </k>
+        <xsl:apply-templates select="./lod:MICROSTRUCTURE" />
     </xsl:template>
-    <!--xsl:template match="lod:MS-TYPE-ADJ" name="MS-TYPE-ADJ">
-       fffffff
-  </xsl:template-->
+
     <xsl:template match="lod:MICROSTRUCTURE//lod:UNITE-DE-SENS" name="TRANS">
         <xsl:variable name="id_sens">
             <xsl:value-of select="@lod:ID-UNITE-DE-SENS"></xsl:value-of>
         </xsl:variable>
-        <xsl:text>❁ </xsl:text>
+        <xsl:text>&#xa;❁ </xsl:text>
         <i>
             <xsl:apply-templates select="./lod:MARQUE-USAGE" />
         </i>
@@ -63,8 +65,11 @@
         </xsl:variable>
         <xsl:if test="$plural != ''">
             <gr>
-           <xsl:text> (</xsl:text><abbr>pl. </abbr><xsl:value-of select="$plural" /><xsl:text>)</xsl:text>
-           </gr>
+                <xsl:text> (</xsl:text>
+                <abbr>pl. </abbr>
+                <xsl:value-of select="$plural" />
+                <xsl:text>)</xsl:text>
+            </gr>
         </xsl:if>
         <xsl:if test="lod:UNITE-POLYLEX-LUX">
             <def>
@@ -86,7 +91,6 @@
                     </xsl:if>
                     <xsl:text>&#xa;</xsl:text>
                 </c>
-
                 <c c="#0068ad">
                     <xsl:text>DE: </xsl:text>
                     <xsl:value-of select="lod:EQUIV-TRAD-ALL/lod:ETA-EXPLICITE/text()" />
@@ -164,11 +168,7 @@
         </def>
     </xsl:template>
     <!--
-  <xsl:template match="person">
-    <li>
-      <xsl:value-of select="family-name"/><xsl:text>, </xsl:text><xsl:value-of select="name"/>
-    </li>
-  </xsl:template>
+  <xsl:template match="person"><li><xsl:value-of select="family-name"/><xsl:text>, </xsl:text><xsl:value-of select="name"/></li></xsl:template>
 -->
     <xsl:template name="examp">
         <xsl:variable name="addr" select="./ancestor::lod:ARTICLE/lod:ITEM-ADRESSE" />
@@ -194,7 +194,6 @@
         </xsl:for-each>
     </xsl:template>
     <xsl:template name="usage_style" match="lod:MARQUE-USAGE">
-
         <xsl:if test="@lod:STYLE">
             <xsl:choose>
                 <xsl:when test="@lod:STYLE = 'ALLG'">
@@ -226,10 +225,7 @@
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:if>
-
     </xsl:template>
-
-
     <!--https://stackoverflow.com/questions/3067113/xslt-string-replace-->
     <xsl:template name="string-replace-all">
         <xsl:param name="text" />
@@ -254,15 +250,55 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
+    <xsl:template name="flx-adj" match="lod:FLX-ADJ">
+        <gr>
+            <blockquote>
+                <xsl:if test="lod:GRONDFORMEN">
+                    <u>Grond Formen:</u>
+                    <c c="#888888">
+                        <xsl:text>&#xa;Positiv: </xsl:text>
+                    </c>
+                    <xsl:value-of select="lod:GRONDFORMEN/lod:POSITIV"></xsl:value-of>
+                    <c c="#888888">
+                        <xsl:text>&#xa;Komparativ: </xsl:text>
+                    </c>
+                    <xsl:value-of select="lod:GRONDFORMEN/lod:KOMPARATIV"></xsl:value-of>
+                    <c c="#888888">
+                        <xsl:text>&#xa;Superlativ: </xsl:text>
+                    </c>
+                    <xsl:value-of select="lod:GRONDFORMEN/lod:SUPERLATIV"></xsl:value-of>
+                </xsl:if>
+            </blockquote>
+            <xsl:for-each select="lod:DEKL/*">
+                <xsl:call-template name="recursive_table"></xsl:call-template>
+            </xsl:for-each>
+        </gr>
+    </xsl:template>
+
+    <xsl:template name="recursive_table">
+        <blockquote>
+            <c c="#888888">
+                <xsl:value-of select="local-name()"></xsl:value-of>
+                <xsl:text>: </xsl:text>
+            </c>
+            <xsl:choose>
+                <xsl:when test="./*">
+                    <blockquote>
+                        <xsl:for-each select="*">
+                            <blockquote>
+                                <xsl:call-template name="recursive_table" />
+                            </blockquote>
+                        </xsl:for-each>
+                    </blockquote>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="text()"></xsl:value-of>
+                </xsl:otherwise>
+            </xsl:choose>
+        </blockquote>
+    </xsl:template>
     <!-- default rule not to copy text from unused nodes 
     https://stackoverflow.com/questions/3360017/why-does-xslt-output-all-text-by-default
    -->
     <xsl:template match="text()|@*"></xsl:template>
-
-
-</xsl:stylesheet> <!-- 
-
-            <xsl:for-each select="lod:EQUIV-TRAD-FR/*">
-                <xsl:value-of select="."/>
-            </xsl:for-each>
--->
+</xsl:stylesheet>
