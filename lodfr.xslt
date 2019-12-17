@@ -106,8 +106,7 @@
                         <xsl:call-template name="examp" />
                         <i>
                             <xsl:text>  ⇨ (</xsl:text>
-                            <xsl:value-of select="lod:GLOSE/*" />
-                            )
+                            <xsl:value-of select="lod:GLOSE/*" /><xsl:text>) </xsl:text>
                         </i>
                     </ex>
                 </blockquote>
@@ -115,7 +114,7 @@
             </xsl:for-each>
             <xsl:if test="./lod:SYNONYMES//lod:TERME-SYN">
                 <blockquote>
-                    <b>Synonyms:</b>
+                    <b><xsl:text>Synonyms:</xsl:text></b>
                     <sr>
                         <xsl:for-each select="./lod:SYNONYMES//lod:TERME-SYN">
                             <kref type="syn">
