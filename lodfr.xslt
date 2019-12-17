@@ -74,7 +74,7 @@
         <xsl:text>&#xa;</xsl:text>
         <def>
             <deftext>
-                <c color="#ffa200">
+                <c c="#ad6e00">
                     <xsl:text>FR: </xsl:text>
                     <xsl:value-of select="lod:EQUIV-TRAD-FR/lod:ETF-EXPLICITE/text()" />
                     <xsl:if test="lod:EQUIV-TRAD-FR/lod:RS-ETF-PRESENTE">
@@ -87,7 +87,7 @@
                     <xsl:text>&#xa;</xsl:text>
                 </c>
 
-                <c color="#ff00ff">
+                <c c="#0068ad">
                     <xsl:text>DE: </xsl:text>
                     <xsl:value-of select="lod:EQUIV-TRAD-ALL/lod:ETA-EXPLICITE/text()" />
                     <xsl:if test="lod:EQUIV-TRAD-ALL/lod:RS-ETA-PRESENTE">
@@ -99,7 +99,7 @@
                     </xsl:if>
                     <xsl:text>&#xa;</xsl:text>
                 </c>
-                <c color="#220066">
+                <c c="#ad3a00">
                     <xsl:text>EN: </xsl:text>
                     <xsl:value-of select="lod:EQUIV-TRAD-EN/lod:ETE-EXPLICITE/text()" />
                     <xsl:if test="lod:EQUIV-TRAD-EN/lod:RS-ETE-PRESENTE">
@@ -111,7 +111,7 @@
                     </xsl:if>
                     <xsl:text>&#xa;</xsl:text>
                 </c>
-                <c color="#10ee15">
+                <c c="#00ad62">
                     <xsl:text>PT: </xsl:text>
                     <xsl:value-of select="lod:EQUIV-TRAD-PO/lod:ETP-EXPLICITE/text()" />
                     <xsl:if test="lod:EQUIV-TRAD-PO/lod:RS-ETP-PRESENTE">
