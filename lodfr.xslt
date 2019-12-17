@@ -123,6 +123,7 @@
                         </xsl:for-each>
                     </sr>
                 </blockquote>
+                <xsl:text>&#xa;</xsl:text>
             </xsl:if>
         </def>
     </xsl:template>
@@ -182,6 +183,11 @@
                 <xsl:value-of select="$text" />
             </xsl:otherwise>
         </xsl:choose>
+    </xsl:template>
+    <!-- default rule not to copy text from unused nodes 
+    https://stackoverflow.com/questions/3360017/why-does-xslt-output-all-text-by-default
+   -->
+    <xsl:template match="text()|@*">
     </xsl:template>
 
 
