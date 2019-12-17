@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
-                xmlns:lod="http://www.lod.lu/" exclude-result-prefixes="lod">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:lod="http://www.lod.lu/" exclude-result-prefixes="lod">
 
-    <xsl:output method="xml" indent="yes" encoding="UTF-8"  doctype-system="https://raw.github.com/soshial/xdxf_makedict/master/format_standard/xdxf_strict.dtd"/>
+    <xsl:output method="xml" indent="yes" encoding="UTF-8" doctype-system="https://raw.github.com/soshial/xdxf_makedict/master/format_standard/xdxf_strict.dtd" />
 
     <xsl:template match="/lod:LOD">
         <xdxf lang_from="LUX" lang_to="FRA" format="logical" revision="000">
@@ -22,9 +21,9 @@
                         <abbr_v>verb</abbr_v>
                     </abbr_def>
                     <abbr_def>
-                        <abbr_k>Av.</abbr_k>
-                        <abbr_k>Ave.</abbr_k>
-                        <abbr_v>Avenue</abbr_v>
+                        <abbr_k>Pl.</abbr_k>
+                        <abbr_k>pl.</abbr_k>
+                        <abbr_v>Plural</abbr_v>
                     </abbr_def>
                 </abbreviations>
             </meta_info>
@@ -36,7 +35,6 @@
 
     <xsl:template match="lod:ITEM" name="ITEM">
         <xsl:apply-templates select="./lod:ARTICLE" />
-        <!--<xsl:apply-templates select="./lod:ARTICLE" />-->
     </xsl:template>
     <xsl:template match="lod:ARTICLE">
         <ar>
@@ -50,44 +48,79 @@
        fffffff
   </xsl:template-->
     <xsl:template match="lod:MICROSTRUCTURE//lod:UNITE-DE-SENS" name="TRANS">
+        <xsl:variable name="id_sens">
+            <xsl:value-of select="@lod:ID-UNITE-DE-SENS"></xsl:value-of>
+        </xsl:variable>
+        <xsl:text>❁ </xsl:text>
+        <i>
+            <xsl:apply-templates select="./lod:MARQUE-USAGE" />
+        </i>
+        <xsl:variable name="plural">
+            <xsl:for-each select="../../../../lod:PLURIEL/*[not(@lod:REFS-IDS-UNITES-DE-SENS-COMPT) or contains(@lod:REFS-IDS-UNITES-DE-SENS-COMPT, $id_sens)]/lod:FORME-PLURIEL">
+                <xsl:value-of select="." />
+                <xsl:if test="position() != last()">, </xsl:if>
+            </xsl:for-each>
+        </xsl:variable>
+        <xsl:if test="$plural != ''">
+            <gr>
+           <xsl:text> (</xsl:text><abbr>pl. </abbr><xsl:value-of select="$plural" /><xsl:text>)</xsl:text>
+           </gr>
+        </xsl:if>
+        <xsl:if test="lod:UNITE-POLYLEX-LUX">
+            <def>
+                <xsl:value-of select="lod:UNITE-POLYLEX-LUX" />
+            </def>
+        </xsl:if>
+        <xsl:text>&#xa;</xsl:text>
         <def>
             <deftext>
                 <c color="#ffa200">
                     <xsl:text>FR: </xsl:text>
                     <xsl:value-of select="lod:EQUIV-TRAD-FR/lod:ETF-EXPLICITE/text()" />
-                    <i>
-                        <xsl:text> (</xsl:text><xsl:value-of select="lod:EQUIV-TRAD-FR/lod:RS-ETF-PRESENTE/text()" /><xsl:text>)</xsl:text>
-                    </i>
+                    <xsl:if test="lod:EQUIV-TRAD-FR/lod:RS-ETF-PRESENTE">
+                        <i>
+                            <xsl:text> (</xsl:text>
+                            <xsl:value-of select="lod:EQUIV-TRAD-FR/lod:RS-ETF-PRESENTE/text()" />
+                            <xsl:text>)</xsl:text>
+                        </i>
+                    </xsl:if>
                     <xsl:text>&#xa;</xsl:text>
                 </c>
+
                 <c color="#ff00ff">
                     <xsl:text>DE: </xsl:text>
                     <xsl:value-of select="lod:EQUIV-TRAD-ALL/lod:ETA-EXPLICITE/text()" />
-                    <i>
-                        <xsl:text> (</xsl:text>
-                        <xsl:value-of select="lod:EQUIV-TRAD-ALL/lod:RS-ETA-PRESENTE/text()" />
-                        <xsl:text>)</xsl:text>
-                    </i>
+                    <xsl:if test="lod:EQUIV-TRAD-ALL/lod:RS-ETA-PRESENTE">
+                        <i>
+                            <xsl:text> (</xsl:text>
+                            <xsl:value-of select="lod:EQUIV-TRAD-ALL/lod:RS-ETA-PRESENTE/text()" />
+                            <xsl:text>)</xsl:text>
+                        </i>
+                    </xsl:if>
                     <xsl:text>&#xa;</xsl:text>
                 </c>
                 <c color="#220066">
                     <xsl:text>EN: </xsl:text>
                     <xsl:value-of select="lod:EQUIV-TRAD-EN/lod:ETE-EXPLICITE/text()" />
-                    <i>
-                        <xsl:text> (</xsl:text>
-                        <xsl:value-of select="lod:EQUIV-TRAD-EN/lod:RS-ETE-PRESENTE/text()" />
-                        <xsl:text>)</xsl:text>
-                    </i>
+                    <xsl:if test="lod:EQUIV-TRAD-EN/lod:RS-ETE-PRESENTE">
+                        <i>
+                            <xsl:text> (</xsl:text>
+                            <xsl:value-of select="lod:EQUIV-TRAD-EN/lod:RS-ETE-PRESENTE/text()" />
+                            <xsl:text>)</xsl:text>
+                        </i>
+                    </xsl:if>
                     <xsl:text>&#xa;</xsl:text>
                 </c>
                 <c color="#10ee15">
                     <xsl:text>PT: </xsl:text>
                     <xsl:value-of select="lod:EQUIV-TRAD-PO/lod:ETP-EXPLICITE/text()" />
-                    <i>
-                        <xsl:text> (</xsl:text>
-                        <xsl:value-of select="lod:EQUIV-TRAD-PO/lod:RS-ETP-PRESENTE/text()" />
-                        <xsl:text>)</xsl:text>
-                    </i>
+                    <xsl:if test="lod:EQUIV-TRAD-PO/lod:RS-ETP-PRESENTE">
+                        <i>
+                            <xsl:text> (</xsl:text>
+                            <xsl:value-of select="lod:EQUIV-TRAD-PO/lod:RS-ETP-PRESENTE/text()" />
+                            <xsl:text>)</xsl:text>
+                        </i>
+                    </xsl:if>
                     <xsl:text>&#xa;</xsl:text>
                 </c>
             </deftext>
@@ -106,7 +139,8 @@
                         <xsl:call-template name="examp" />
                         <i>
                             <xsl:text>  ⇨ (</xsl:text>
-                            <xsl:value-of select="lod:GLOSE/*" /><xsl:text>) </xsl:text>
+                            <xsl:value-of select="lod:GLOSE/*" />
+                            <xsl:text>) </xsl:text>
                         </i>
                     </ex>
                 </blockquote>
@@ -114,7 +148,9 @@
             </xsl:for-each>
             <xsl:if test="./lod:SYNONYMES//lod:TERME-SYN">
                 <blockquote>
-                    <b><xsl:text>Synonyms:</xsl:text></b>
+                    <b>
+                        <xsl:text>Synonyms:</xsl:text>
+                    </b>
                     <sr>
                         <xsl:for-each select="./lod:SYNONYMES//lod:TERME-SYN">
                             <kref type="syn">
@@ -147,11 +183,9 @@
                             <xsl:with-param name="by" select="$addr" />
                         </xsl:call-template>
                     </xsl:variable>
-                    <xsl:value-of select="' '" />
-                    <!--xsl:value-of select="replace(text(), $torepl, $addr)" /-->
-                    <!--xsl:value-of select="$fullword" /-->
+                    <xsl:text>&#160;</xsl:text>
                     <xsl:value-of select="$fullword" />
-                    <xsl:value-of select="' '" />
+                    <xsl:text>&#160;</xsl:text>
                 </xsl:when>
                 <xsl:otherwise>
                     <xsl:value-of select="." />
@@ -159,6 +193,42 @@
             </xsl:choose>
         </xsl:for-each>
     </xsl:template>
+    <xsl:template name="usage_style" match="lod:MARQUE-USAGE">
+
+        <xsl:if test="@lod:STYLE">
+            <xsl:choose>
+                <xsl:when test="@lod:STYLE = 'ALLG'">
+                    <xsl:text>∅</xsl:text>
+                </xsl:when>
+                <xsl:when test="@lod:STYLE = 'EGS'">
+                    <xsl:text>ëmgangssproochlech</xsl:text>
+                </xsl:when>
+                <xsl:when test="@lod:STYLE = 'FAM'">
+                    <xsl:text>graff</xsl:text>
+                </xsl:when>
+                <xsl:when test="@lod:STYLE = 'GEHUEW'">
+                    <xsl:text>gehuewen</xsl:text>
+                </xsl:when>
+                <xsl:when test="@lod:STYLE = 'KANNERSPROOCH'">
+                    <xsl:text>Kannersprooch</xsl:text>
+                </xsl:when>
+                <xsl:when test="@lod:STYLE = 'PEJ'">
+                    <xsl:text>pejorativ</xsl:text>
+                </xsl:when>
+                <xsl:when test="@lod:STYLE = 'VEREELZT'">
+                    <xsl:text>vereelzt</xsl:text>
+                </xsl:when>
+                <xsl:when test="@lod:STYLE = 'VULG'">
+                    <xsl:text>vulgär</xsl:text>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:text>?</xsl:text>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:if>
+
+    </xsl:template>
+
 
     <!--https://stackoverflow.com/questions/3067113/xslt-string-replace-->
     <xsl:template name="string-replace-all">
@@ -187,8 +257,7 @@
     <!-- default rule not to copy text from unused nodes 
     https://stackoverflow.com/questions/3360017/why-does-xslt-output-all-text-by-default
    -->
-    <xsl:template match="text()|@*">
-    </xsl:template>
+    <xsl:template match="text()|@*"></xsl:template>
 
 
 </xsl:stylesheet> <!-- 
