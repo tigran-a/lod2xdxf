@@ -9,11 +9,11 @@
     <xsl:template match="/lod:LOD">
         <xdxf lang_from="LUX" lang_to="LUX" format="logical" revision="000">
             <meta_info>
-                <title>LOD-based LB-FR</title>
-                <full_title>Luxembourgish-French Dictionary</full_title>
+                <title>LOD-based LB</title>
+                <full_title>Luxembourgish-French/English/German/Portuguese Dictionary</full_title>
                 <description>Converted with losses from https://data.public.lu/en/datasets/letzebuerger-online-dictionnaire-raw-data/</description>
                 <file_ver>000</file_ver>
-                <last_edited_date>2019-12-16</last_edited_date>
+                <last_edited_date>2019-12-20</last_edited_date>
                 <abbreviations>
                     <abbr_def>
                         <abbr_k>n.</abbr_k>
