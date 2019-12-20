@@ -7,7 +7,7 @@
     <xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'" />
 
     <xsl:template match="/lod:LOD">
-        <xdxf lang_from="LUX" lang_to="FRA" format="logical" revision="000">
+        <xdxf lang_from="LUX" lang_to="LUX" format="logical" revision="000">
             <meta_info>
                 <title>LOD-based LB-FR</title>
                 <full_title>Luxembourgish-French Dictionary</full_title>
