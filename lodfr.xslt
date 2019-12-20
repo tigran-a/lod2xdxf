@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:lod="http://www.lod.lu/" exclude-result-prefixes="lod">
     <xsl:output method="xml" indent="yes" encoding="UTF-8" doctype-system="https://raw.github.com/soshial/xdxf_makedict/master/format_standard/xdxf_strict.dtd" />
+
+    <!-- https://stackoverflow.com/questions/586231/how-can-i-convert-a-string-to-upper-or-lower-case-with-xslt -->
+    <xsl:variable name="lowercase" select="'abcdefghijklmnopqrstuvwxyz'" />
+    <xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'" />
+
     <xsl:template match="/lod:LOD">
         <xdxf lang_from="LUX" lang_to="FRA" format="logical" revision="000">
             <meta_info>
@@ -16,6 +21,7 @@
                     </abbr_def>
                     <abbr_def>
                         <abbr_k>v.</abbr_k>
+                        <abbr_k>vrb</abbr_k>
                         <abbr_v>verb</abbr_v>
                     </abbr_def>
                     <abbr_def>
@@ -33,24 +39,32 @@
     <xsl:template match="lod:ITEM" name="ITEM">
         <ar>
             <xsl:apply-templates select="./lod:ARTICLE" />
+            <!-- table about adjective forms -->
             <xsl:apply-templates select="./lod:FLX-ADJ" />
             <xsl:for-each select="./lod:FLX-VRB">
+            <!-- table with the verb form -->
                 <xsl:call-template name="recursive_table" />
             </xsl:for-each>
 
         </ar>
 
     </xsl:template>
-    <xsl:template match="lod:ARTICLE">
 
-        <k id="{lod:ITEM-ADRESSE/@lod:ID-ITEM-ADRESSE}">
+
+    <xsl:template match="lod:ARTICLE">
+        <!-- dictionary article -->
+        <k id="{lod:ITEM-ADRESSE/@lod:ID-ITEM-ADRESSE}"> 
+            <!-- key (word to translate) -->
             <xsl:value-of select="lod:ITEM-ADRESSE" />
         </k>
+        <!-- if a word is a spelling variant or contraction -->
         <xsl:call-template name="reference" />
+        <!-- translation details -->
         <xsl:apply-templates select="./lod:MICROSTRUCTURE" />
     </xsl:template>
 
     <xsl:template name="reference">
+        <!-- extract somehow info about the referenced articles in case of spelling variations -->
         <xsl:if test="./lod:MICROSTRUCTURE//*[starts-with(local-name(), 'RENVOI-')]">
             <sr>
                 <xsl:for-each select="./lod:MICROSTRUCTURE//*[starts-with(local-name(), 'RENVOI-')]">
@@ -79,6 +93,7 @@
     </xsl:template>
 
     <xsl:template match="lod:MICROSTRUCTURE//lod:UNITE-DE-SENS" name="TRANS">
+        <!-- Word definition(translation) and grammar details -->
         <xsl:variable name="id_sens">
             <xsl:value-of select="@lod:ID-UNITE-DE-SENS"></xsl:value-of>
         </xsl:variable>
@@ -86,6 +101,9 @@
         <i>
             <xsl:apply-templates select="./lod:MARQUE-USAGE" />
         </i>
+        <gr>
+        <xsl:value-of select="translate(../../../../*[starts-with(local-name(), 'CAT-GRAM-')]/@*[starts-with(local-name(), 'C-G-')], $uppercase, $lowercase)"></xsl:value-of>
+        </gr>
         <xsl:variable name="plural">
             <xsl:for-each select="../../../../lod:PLURIEL/*[not(@lod:REFS-IDS-UNITES-DE-SENS-COMPT) or contains(@lod:REFS-IDS-UNITES-DE-SENS-COMPT, $id_sens)]/lod:FORME-PLURIEL">
                 <xsl:value-of select="." />
@@ -196,10 +214,9 @@
             </xsl:if>
         </def>
     </xsl:template>
-    <!--
-  <xsl:template match="person"><li><xsl:value-of select="family-name"/><xsl:text>, </xsl:text><xsl:value-of select="name"/></li></xsl:template>
--->
+
     <xsl:template name="examp">
+        <!-- extract word usage examples -->
         <xsl:variable name="addr" select="./ancestor::lod:ARTICLE/lod:ITEM-ADRESSE" />
         <xsl:variable name="torepl" select="concat(substring($addr,1,1),'.')" />
         <xsl:for-each select="./lod:TEXTE-EX/*">
@@ -222,7 +239,9 @@
             </xsl:choose>
         </xsl:for-each>
     </xsl:template>
+
     <xsl:template name="usage_style" match="lod:MARQUE-USAGE">
+        <!-- word usage style -->
         <xsl:if test="@lod:STYLE">
             <xsl:choose>
                 <xsl:when test="@lod:STYLE = 'ALLG'">
@@ -279,7 +298,9 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
+
     <xsl:template name="flx-adj" match="lod:FLX-ADJ">
+        <!-- adjective forms -->
         <gr>
             <blockquote>
                 <xsl:if test="lod:GRONDFORMEN">
@@ -305,6 +326,7 @@
     </xsl:template>
 
     <xsl:template name="recursive_table">
+        <!-- print complex structures as they are ~ xml -> key/value -->
         <blockquote>
             <c c="#888888">
                 <xsl:value-of select="local-name()"></xsl:value-of>
