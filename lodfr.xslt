@@ -42,7 +42,7 @@
             <!-- table about adjective forms -->
             <xsl:apply-templates select="./lod:FLX-ADJ" />
             <xsl:for-each select="./lod:FLX-VRB">
-            <!-- table with the verb form -->
+                <!-- table with the verb form -->
                 <xsl:call-template name="recursive_table" />
             </xsl:for-each>
 
@@ -53,7 +53,7 @@
 
     <xsl:template match="lod:ARTICLE">
         <!-- dictionary article -->
-        <k id="{lod:ITEM-ADRESSE/@lod:ID-ITEM-ADRESSE}"> 
+        <k id="{lod:ITEM-ADRESSE/@lod:ID-ITEM-ADRESSE}">
             <!-- key (word to translate) -->
             <xsl:value-of select="lod:ITEM-ADRESSE" />
         </k>
@@ -76,16 +76,16 @@
                         </xsl:variable>
                         <xsl:value-of select="/lod:LOD/lod:ITEM/lod:ARTICLE/lod:ITEM-ADRESSE[@lod:ID-ITEM-ADRESSE = $id_ref_spv]" />
                         -->
-                        <xsl:value-of select="substring-before(@lod:REF-ID-ITEM-ADRESSE, '1')"/>
-                        <xsl:value-of select="substring-before(@lod:REF-ID-ITEM-ADRESSE, '2')"/>
-                        <xsl:value-of select="substring-before(@lod:REF-ID-ITEM-ADRESSE, '3')"/>
-                        <xsl:value-of select="substring-before(@lod:REF-ID-ITEM-ADRESSE, '4')"/>
-                        <xsl:value-of select="substring-before(@lod:REF-ID-ITEM-ADRESSE, '5')"/>
-                        <xsl:value-of select="substring-before(@lod:REF-ID-ITEM-ADRESSE, '6')"/>
-                        <xsl:value-of select="substring-before(@lod:REF-ID-ITEM-ADRESSE, '7')"/>
-                        <xsl:value-of select="substring-before(@lod:REF-ID-ITEM-ADRESSE, '8')"/>
-                        <xsl:value-of select="substring-before(@lod:REF-ID-ITEM-ADRESSE, '9')"/>
-                        <xsl:value-of select="substring-before(@lod:REF-ID-ITEM-ADRESSE, '0')"/>
+                        <xsl:value-of select="substring-before(@lod:REF-ID-ITEM-ADRESSE, '1')" />
+                        <xsl:value-of select="substring-before(@lod:REF-ID-ITEM-ADRESSE, '2')" />
+                        <xsl:value-of select="substring-before(@lod:REF-ID-ITEM-ADRESSE, '3')" />
+                        <xsl:value-of select="substring-before(@lod:REF-ID-ITEM-ADRESSE, '4')" />
+                        <xsl:value-of select="substring-before(@lod:REF-ID-ITEM-ADRESSE, '5')" />
+                        <xsl:value-of select="substring-before(@lod:REF-ID-ITEM-ADRESSE, '6')" />
+                        <xsl:value-of select="substring-before(@lod:REF-ID-ITEM-ADRESSE, '7')" />
+                        <xsl:value-of select="substring-before(@lod:REF-ID-ITEM-ADRESSE, '8')" />
+                        <xsl:value-of select="substring-before(@lod:REF-ID-ITEM-ADRESSE, '9')" />
+                        <xsl:value-of select="substring-before(@lod:REF-ID-ITEM-ADRESSE, '0')" />
                     </kref>
                 </xsl:for-each>
             </sr>
@@ -102,7 +102,12 @@
             <xsl:apply-templates select="./lod:MARQUE-USAGE" />
         </i>
         <gr>
-        <xsl:value-of select="translate(../../../../*[starts-with(local-name(), 'CAT-GRAM-')]/@*[starts-with(local-name(), 'C-G-')], $uppercase, $lowercase)"></xsl:value-of>
+            <!--
+                <xsl:value-of select="translate(../../../../*[starts-with(local-name(), 'CAT-GRAM-')]/@*[starts-with(local-name(), 'C-G-')], $uppercase, $lowercase)"></xsl:value-of>
+            -->
+            <xsl:for-each select="../../../../*[starts-with(local-name(), 'CAT-GRAM-')]">
+                <xsl:value-of select="translate(substring-after(local-name(),'CAT-GRAM-'), $uppercase, $lowercase)"></xsl:value-of>
+            </xsl:for-each>
         </gr>
         <xsl:variable name="plural">
             <xsl:for-each select="../../../../lod:PLURIEL/*[not(@lod:REFS-IDS-UNITES-DE-SENS-COMPT) or contains(@lod:REFS-IDS-UNITES-DE-SENS-COMPT, $id_sens)]/lod:FORME-PLURIEL">
