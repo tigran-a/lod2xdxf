@@ -101,6 +101,7 @@
         <i>
             <xsl:apply-templates select="./lod:MARQUE-USAGE" />
         </i>
+        <!-- part of speech -->
         <gr>
             <!--
                 <xsl:value-of select="translate(../../../../*[starts-with(local-name(), 'CAT-GRAM-')]/@*[starts-with(local-name(), 'C-G-')], $uppercase, $lowercase)"></xsl:value-of>
@@ -109,6 +110,14 @@
                 <xsl:value-of select="translate(substring-after(local-name(),'CAT-GRAM-'), $uppercase, $lowercase)"></xsl:value-of>
             </xsl:for-each>
         </gr>
+        <!-- genre -->
+        <xsl:for-each select="../../../../lod:GENRE">
+            <gr>
+                <xsl:text>(</xsl:text>
+                <xsl:value-of select="translate(@lod:GEN, $uppercase, $lowercase)"></xsl:value-of>
+                <xsl:text>)</xsl:text>
+            </gr>
+        </xsl:for-each>
         <xsl:variable name="plural">
             <xsl:for-each select="../../../../lod:PLURIEL/*[not(@lod:REFS-IDS-UNITES-DE-SENS-COMPT) or contains(@lod:REFS-IDS-UNITES-DE-SENS-COMPT, $id_sens)]/lod:FORME-PLURIEL">
                 <xsl:value-of select="." />
