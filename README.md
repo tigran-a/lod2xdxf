@@ -27,6 +27,16 @@ Feel free to test and add more.
 Note: some pros and cons stated here might be due to the wrong usage of xdxf tags and markup in general. 
 ### Linux
 #### GoldenDict
+![Image](../master/screenshots/Linux/GoldenDict/1.png?raw=true)
+![Image](../master/screenshots/Linux/GoldenDict/2.png?raw=true)
+
+Pros: 
+- display layout is OK
+- supports colors
+- finds dictionary easily
+Cons: 
+- verbs/adjectives forms are a bit unalligned
+
 ### iOS
 #### EBPocket Basic
 Pros: 
