@@ -46,7 +46,36 @@
         <k id="{lod:ITEM-ADRESSE/@lod:ID-ITEM-ADRESSE}">
             <xsl:value-of select="lod:ITEM-ADRESSE" />
         </k>
+        <xsl:call-template name="reference" />
         <xsl:apply-templates select="./lod:MICROSTRUCTURE" />
+    </xsl:template>
+
+    <xsl:template name="reference">
+        <xsl:if test="./lod:MICROSTRUCTURE//*[starts-with(local-name(), 'RENVOI-')]">
+            <sr>
+                <xsl:for-each select="./lod:MICROSTRUCTURE//*[starts-with(local-name(), 'RENVOI-')]">
+
+                    <kref type="spv" idref="{@lod:REF-ID-ITEM-ADRESSE}">
+                        <!-- too long to re-search all items 
+                        <xsl:variable name="id_ref_spv">
+                          <xsl:value-of select="@lod:REF-ID-ITEM-ADRESSE"></xsl:value-of>
+                        </xsl:variable>
+                        <xsl:value-of select="/lod:LOD/lod:ITEM/lod:ARTICLE/lod:ITEM-ADRESSE[@lod:ID-ITEM-ADRESSE = $id_ref_spv]" />
+                        -->
+                        <xsl:value-of select="substring-before(@lod:REF-ID-ITEM-ADRESSE, '1')"/>
+                        <xsl:value-of select="substring-before(@lod:REF-ID-ITEM-ADRESSE, '2')"/>
+                        <xsl:value-of select="substring-before(@lod:REF-ID-ITEM-ADRESSE, '3')"/>
+                        <xsl:value-of select="substring-before(@lod:REF-ID-ITEM-ADRESSE, '4')"/>
+                        <xsl:value-of select="substring-before(@lod:REF-ID-ITEM-ADRESSE, '5')"/>
+                        <xsl:value-of select="substring-before(@lod:REF-ID-ITEM-ADRESSE, '6')"/>
+                        <xsl:value-of select="substring-before(@lod:REF-ID-ITEM-ADRESSE, '7')"/>
+                        <xsl:value-of select="substring-before(@lod:REF-ID-ITEM-ADRESSE, '8')"/>
+                        <xsl:value-of select="substring-before(@lod:REF-ID-ITEM-ADRESSE, '9')"/>
+                        <xsl:value-of select="substring-before(@lod:REF-ID-ITEM-ADRESSE, '0')"/>
+                    </kref>
+                </xsl:for-each>
+            </sr>
+        </xsl:if>
     </xsl:template>
 
     <xsl:template match="lod:MICROSTRUCTURE//lod:UNITE-DE-SENS" name="TRANS">
