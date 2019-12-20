@@ -7,11 +7,50 @@ Sometimes it is needed to access the data without the Internet. From there came 
 
 This is an attempt to have a way of getting an offline Luxembourgish dictionary with the official articles.
 
-## Howto
-
 ## The flow
 
+[ LOD XML ] --> lod2xdxf xslt --> [ LOD in XDXF XML format ] --> pyglossary --> [ LOD in stardict format ] --> any dictionary supporting stardict and upload custom dictionaries
+
+## Howto
+
+1. Downlaod the official raw data .zip file
+2. unzip
+3. install xsltproc
+4. run xsltproc with this repo's xslt on LOD's XML to obtain lod.xdxf
+5. run pyglossary (--read-format=Xdxf --write-format=Stardict)
+6. Archive if needed the result and upload to your dictionary
+
+Already converted version might be available here: https://letzebuergesch.review/ufiles/lod.zip  or https://letzebuergesch.review/ufiles/lod.tar.bz2 or https://letzebuergesch.review/ufiles/lod.tar.gz
+
+## (free) Dictionary software
+Feel free to test and add more. 
+Note: some pros and cons stated here might be due to the wrong usage of xdxf tags and markup in general. 
+### Linux
+#### GoldenDict
+### iOS
+#### EBPocket Basic
+Pros: 
+- display layout is correct
+Cons: 
+- Need to upload via FTP
+- Does not display colors
+#### Dicty
+Pros: 
+- display colors
+- can download dictionary via an http(s) link
+Cons: 
+- Does not display all possible articles for the same word !
+- "tables" with verb and adjective forms have no desired layout 
+### Android
+#### EBPocket Light
+
 ## Sources
+
+#### Converter
+Original converter
+https://github.com/ilius/pyglossary
+Two symbols changed version (put back removed support of xdxf, required for what is done here)
+https://github.com/tigran-a/pyglossary
 
 #### Raw data
 Here is the raw publicly available data used by the LOD dictionary: 
