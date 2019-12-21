@@ -23,8 +23,11 @@ This is an attempt to have a way of getting an offline Luxembourgish dictionary 
 Already converted version might be available here: https://letzebuergesch.review/ufiles/lod.zip  or https://letzebuergesch.review/ufiles/lod.tar.bz2 or https://letzebuergesch.review/ufiles/lod.tar.gz
 
 ## (free) Dictionary software
+
 Feel free to test and add more. 
-Note: some pros and cons stated here might be due to the wrong usage of xdxf tags and markup in general. 
+
+Note: some cons stated here might be due to the wrong usage of xdxf tags or markup in general and no knowledge of the "right way" of using these dictionaries.
+
 ### Linux
 #### GoldenDict
 ![Image](../master/screenshots/Linux/GoldenDict/1.png?raw=true)
@@ -34,31 +37,63 @@ Pros:
 - display layout is OK
 - supports colors
 - finds dictionary easily
+
 Cons: 
 - verbs/adjectives forms are a bit unalligned
 
 ### iOS
 #### EBPocket Basic
+![Image](../master/screenshots/iOS/ebpocket/ebpocket.basic.1.png?raw=true)
+
 Pros: 
 - display layout is correct
+
 Cons: 
 - Need to upload via FTP
 - Does not display colors
+- translations from all languages are merged into one line
+
 #### Dicty
+![Image](../master/screenshots/iOS/dicty/dicty.1.png?raw=true)
+
 Pros: 
 - display colors
 - can download dictionary via an http(s) link
+
 Cons: 
-- Does not display all possible articles for the same word !
+- Does not display all possible articles for the same word (!)
 - "tables" with verb and adjective forms have no desired layout 
+
 ### Android
-#### EBPocket Light
+
+#### EBPocket Free
+![Image](../master/screenshots/Android/ebpocket/ebpocket.free.1.jpg?raw=true)
+
+Pros: 
+- displays verb/adjective form in a good layout
+
+Cons:
+- translations from all languages are merged into one line
+- Need to upload via FTP
+- Does not display colors
+
+#### GoldenDict Free
+![Image](../master/screenshots/Android/goldendict/goldendict.free.1.jpg?raw=true)
+
+Pros: 
+- works
+
+Cons:
+- display spacing is not too good
+- Need to unarchive the dictionary data
+- Does not display colors
 
 ## Sources
 
 #### Converter
 Original converter
 https://github.com/ilius/pyglossary
+
 Two symbols changed version (put back removed support of xdxf, required for what is done here)
 https://github.com/tigran-a/pyglossary
 
