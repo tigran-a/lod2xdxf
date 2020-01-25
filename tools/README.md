@@ -16,13 +16,15 @@ From 1.3Gb to 90Mb.
 
 ### lod2json.xslt
 
-An ugly tool to get a json with short translation out of the xml. After having prettified it may look like: 
+An ugly tool to get a json with short translation out of the xml. 
 
 Usage example: 
 
 ```
 xsltproc -o lod.json lod2json.xslt lod-noaudio.xml
 ```
+
+After having prettified it may look like: 
 
 ```
   "A": [
